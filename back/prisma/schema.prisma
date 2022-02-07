@@ -9,3 +9,105 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model User {
+  id                  String         @id @default(cuid())
+  email               String         @unique
+  Enterprise          Enterprise     @relation(fields: [enterpriseId], references: [id])
+  enterpriseId        String
+  // duda campo
+  ProjectDevelopers   Project?       @relation(fields: [projectIdDevelopers], references: [id], name: "developers")
+  projectIdDevelopers String?
+  ProjectClients      Project?       @relation(fields: [projectIdClients], references: [id], name: "clients")
+  projectIdClients    String?
+  Issue               Issue[]
+  IssueComment        IssueComment[]
+  // fin duda campo
+  role                Enum_Role
+
+  createdAt DateTime @default(now())
+  updateAt  DateTime @updatedAt
+}
+
+enum Enum_Role {
+  Administrator
+  Developer
+  Client
+}
+
+model Enterprise {
+  id      String    @id @default(cuid())
+  name    String
+  User    User[]
+  Project Project[]
+
+  createdAt DateTime @default(now())
+  updateAt  DateTime @updatedAt
+}
+
+model Project {
+  id               String     @id @default(cuid())
+  name             String
+  description      String
+  developers       User[]     @relation(name: "developers")
+  clientEnterprise Enterprise @relation(fields: [enterpriseId], references: [id])
+  enterpriseId     String
+  clients          User[]     @relation(name: "clients")
+  Issue            Issue[]
+
+  createdAt DateTime @default(now())
+  updateAt  DateTime @updatedAt
+}
+
+model Issue {
+  id           String             @id @default(cuid())
+  description  String
+  category     Enum_IssueType
+  priority     Enum_IssuePriority
+  status       Enum_IssueStatus
+  hourEstimate Int
+  developer    User               @relation(fields: [userId], references: [id])
+  userId       String
+  dueDate      DateTime
+  closeDate    DateTime
+  project      Project            @relation(fields: [projectId], references: [id])
+  projectId    String
+  IssueComment IssueComment[]
+
+  createdAt DateTime @default(now())
+  updateAt  DateTime @updatedAt
+}
+
+enum Enum_IssueType {
+  MissingTask
+  Bug
+  Additional
+}
+
+enum Enum_IssuePriority {
+  Low
+  Medium
+  High
+}
+
+enum Enum_IssueStatus {
+  NotAssigned
+  Assigned
+  Estimated
+  InternalValidation
+  ClientValidation
+  Closed
+  Abandoned
+}
+
+model IssueComment {
+  id        String @id @default(cuid())
+  comment   String
+  createdBy User   @relation(fields: [userId], references: [id])
+  userId    String
+  issue     Issue  @relation(fields: [issueId], references: [id])
+  issueId   String
+
+  createdAt DateTime @default(now())
+  updateAt  DateTime @updatedAt
+}
