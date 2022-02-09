@@ -1,5 +1,5 @@
+import 'styles/globals.css';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import 'font/styles/globals.css';
 import Index from 'pages';
 import PublicLayout from 'layouts/PublicLayout';
 
