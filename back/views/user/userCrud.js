@@ -9,7 +9,7 @@ const userCrud = express.Router();
 
 userCrud.route("/user").post(async (req, res) => {
   //   const clientes = await prisma.test.findMany();
-  try{
+  try {
     const datosUser = req.body;
     const nuevoUser = await prisma.user.create({
       data: {
@@ -19,12 +19,14 @@ userCrud.route("/user").post(async (req, res) => {
       },
     });
     res.status(200).json({ user: true, nuevoUser });
-  }
-  catch{
+  } catch {
     res.status(400).json();
   }
 });
 
-
+userCrud.route("/user").get(async (req, res) => {
+  const emails = await prisma.user.findMany();
+  res.status(200).json({ emails });
+});
 
 export { userCrud };
