@@ -5,7 +5,7 @@ import Navbar from 'components/Navbar';
 const PublicLayout = () => (
   <div className='flex flex-col h-screen justify-between'>
     <Navbar />
-    <div className='h-full   bg-slate-600'>
+    <div className='h-full   bg-slate-500'>
       <Outlet />
     </div>
   </div>
