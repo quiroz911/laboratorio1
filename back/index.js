@@ -3,6 +3,7 @@ import cors from "cors";
 import { userCrud } from "./views/user/userCrud.js";
 import { enterpriseCrud } from "./views/enterprise/enterpriseCrud.js";
 import { adminCrud } from "./views/Admin/AdminCrud.js";
+import { projectCrud } from "./views/project/projectCrud.js";
 
 const app = express();
 
@@ -14,6 +15,7 @@ app.use(express.json());
 app.use(userCrud);
 app.use(adminCrud);
 app.use(enterpriseCrud);
+app.use(projectCrud);
 
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`);
