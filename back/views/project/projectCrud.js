@@ -8,7 +8,7 @@ const prisma = new PrismaClient();
 const projectCrud = express.Router();
 
 projectCrud.route("/project").post(async (req, res) => {
-  //try {
+  try {
     const datosProject = req.body;
     const nuevoProject = await prisma.project.create({
       data: {
@@ -18,9 +18,9 @@ projectCrud.route("/project").post(async (req, res) => {
     });
 
     res.status(200).json({ user: true, nuevoProject });
-  //} catch {
-    //res.status(400).json();
-  //}
+  } catch {
+    res.status(400).json();
+  }
 });
 
 export { projectCrud };
