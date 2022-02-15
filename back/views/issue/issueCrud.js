@@ -19,7 +19,27 @@ issueCrud.route("/issue").post(async (req, res) => {
         status: "NotAssigned",
       },
     });
-  } catch {}
+    res.status(200).json({ user: true, nuevaIssue });
+  } catch {
+    res.status(400).json();
+  }
+});
+
+issueCrud.route("/issue/type").put(async (req, res) => {
+  try {
+    const datosIssue = req.body;
+    await prisma.issue.update({
+      where: {
+        id: datosIssue.id,
+      },
+      data: {
+        category: datosIssue.category,
+      },
+    });
+    res.status(200).json({ user: true });
+  } catch {
+    res.status(400).json();
+  }
 });
 
 export { issueCrud };
